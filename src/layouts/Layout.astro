@@ -1,0 +1,219 @@
+---
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const {
+	title,
+	description = 'Indie software studio by Ovi Ispas.',
+}: Props = Astro.props;
+
+const navLinks = [
+	{ href: '/', label: 'Home' },
+	{ href: '/about-me', label: 'About Me' },
+];
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const brandLabel = pathname === '/' ? 'Indie software studio by Ovi Ispas' : 'Console Craft';
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="icon" href="/favicon.ico" sizes="any" />
+		<link rel="icon" type="image/svg+xml" href="/logo.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+	</head>
+	<body>
+		<div class="site-shell">
+			<header class="site-header">
+				<a class="brand" href="/">
+					<span>{brandLabel}</span>
+				</a>
+				<nav class="site-nav" aria-label="Main">
+					{
+						navLinks.map((link) => {
+							const linkPath = link.href.replace(/\/$/, '') || '/';
+
+							return (
+								<a href={link.href} class={pathname === linkPath ? 'active' : undefined}>
+									{link.label}
+								</a>
+							);
+						})
+					}
+				</nav>
+			</header>
+
+			<main class="site-main">
+				<slot />
+			</main>
+
+			<footer class="site-footer">
+				<p>© {year} Console Craft</p>
+			</footer>
+		</div>
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--normal: #d4be98;
+		--purple: #d4a599;
+		--blue: #adb79d;
+		--orange: #eead83;
+		--aqua: #b2ba8e;
+		--green: #bac584;
+		--red: #de9880;
+		--yellow: #d6b37b;
+		--brown: #ca9a70;
+		--background: #33302e;
+		--paper: var(--background);
+		--paper-strong: #3b3734;
+		--ink: var(--normal);
+		--ink-soft: var(--blue);
+		--line: rgba(202, 154, 112, 0.42);
+		--accent: var(--green);
+		--accent-soft: rgba(212, 165, 153, 0.16);
+		--shadow: 0 16px 34px rgba(0, 0, 0, 0.35);
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	html,
+	body {
+		margin: 0;
+		min-height: 100%;
+	}
+
+	body {
+		font-family: 'JetBrains Mono', monospace;
+		color: var(--ink);
+		background:
+			radial-gradient(circle at 6% -8%, rgba(214, 179, 123, 0.18) 0%, transparent 42%),
+			radial-gradient(circle at 100% 0%, rgba(212, 165, 153, 0.15) 0%, transparent 44%),
+			radial-gradient(circle at 84% 100%, rgba(186, 197, 132, 0.14) 0%, transparent 40%),
+			var(--paper);
+	}
+
+	a {
+		color: inherit;
+	}
+
+	.site-shell {
+		width: min(1040px, 100% - 2.5rem);
+		margin: 0 auto;
+		padding-bottom: 2.5rem;
+	}
+
+	.site-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1rem;
+		padding: 1.8rem 0 1.25rem;
+		border-bottom: 1px solid var(--line);
+	}
+
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.65rem;
+		font-weight: 700;
+		letter-spacing: 0.01em;
+		text-decoration: none;
+	}
+
+	.brand span {
+		font-size: 0.95rem;
+	}
+
+	.site-nav {
+		display: inline-flex;
+		gap: 0.5rem;
+	}
+
+	.site-nav a {
+		padding: 0.45rem 0.75rem;
+		border-radius: 999px;
+		border: 1px solid transparent;
+		text-decoration: none;
+		color: var(--ink-soft);
+		transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease;
+	}
+
+	.site-nav a:hover {
+		color: var(--green);
+	}
+
+	.site-nav a.active {
+		background: var(--accent-soft);
+		border-color: var(--line);
+		color: var(--yellow);
+	}
+
+	.site-main {
+		padding-top: 2.5rem;
+	}
+
+	.site-main > * {
+		animation: fade-up 620ms ease both;
+	}
+
+	.site-footer {
+		padding-top: 2.75rem;
+		font-size: 0.9rem;
+		color: var(--brown);
+	}
+
+	@keyframes fade-up {
+		from {
+			opacity: 0;
+			transform: translateY(16px);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (max-width: 720px) {
+		.site-shell {
+			width: min(1040px, 100% - 1.5rem);
+		}
+
+		.site-header {
+			padding-top: 1.2rem;
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.brand { 
+			margin-left: 0.5rem 
+		}
+
+		.site-nav {
+			margin-top: 1rem;
+			width: 100%;
+		}
+
+		.site-main {
+			padding-top: 1.8rem;
+		}
+	}
+</style>

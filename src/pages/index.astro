@@ -1,0 +1,293 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Console Craft | Indie software studio by Ovi Ispas" description="Indie software studio by Ovi Ispas">
+	<section class="hero">
+		<h1>Console Craft</h1>
+		<p class="intro">
+			Console Craft is an indie software studio by Ovi Ispas, focused on building small, sharp tools that feel great to use. <br /><br />
+			It ships practical apps and developer utilities with a bias for simplicity, reliability, and beautiful design. <br/><br/>
+			Less bloat, more craft.
+		</p>
+	</section>
+
+	<section class="featured-projects" aria-labelledby="featured-projects-heading">
+		<div class="section-header">
+			<h2 id="featured-projects-heading">Featured Project</h2>
+			<a href="/about-me">Meet the developer<span>→</span></a>
+		</div>
+
+		<article class="project-card">
+			<button
+				class="project-image-trigger"
+				type="button"
+				aria-label="Expand Term Serve screenshot"
+				aria-controls="project-lightbox"
+			>
+				<img
+					src="/images/projects/term-serve-project-screenshot.png"
+					alt="Term Serve user interface screenshot"
+					loading="lazy"
+				/>
+			</button>
+			<div class="project-copy">
+				<h3>Term Serve</h3>
+				<p>
+					Term Serve lets you securely open your terminal in any browser in seconds.<br/><br/> 
+					It starts a local server, launches a real shell session, and gives you a clean, responsive UI to use it from your laptop or phone.<br/><br/>
+					<strong>Features:</strong> Mobile-friendly controls, custom themes and mono-space fonts, auth token, access logs, and fast single-binary install.
+				</p>
+				<a
+					class="project-button"
+					href="https://github.com/console-craft/term-serve"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Open on Github
+				</a>
+			</div>
+		</article>
+	</section>
+
+	<div class="lightbox" id="project-lightbox" aria-hidden="true">
+		<div class="lightbox-content">
+			<img
+				src="/images/projects/term-serve-project-screenshot.png"
+				alt="Expanded Term Serve user interface screenshot"
+			/>
+		</div>
+	</div>
+</Layout>
+
+<script is:inline>
+	const trigger = document.querySelector('.project-image-trigger');
+	const lightbox = document.getElementById('project-lightbox');
+
+	if (trigger && lightbox) {
+		const openLightbox = () => {
+			lightbox.classList.add('is-open');
+			lightbox.setAttribute('aria-hidden', 'false');
+			document.body.style.overflow = 'hidden';
+		};
+
+		const closeLightbox = () => {
+			lightbox.classList.remove('is-open');
+			lightbox.setAttribute('aria-hidden', 'true');
+			document.body.style.overflow = '';
+		};
+
+		trigger.addEventListener('click', openLightbox);
+
+		lightbox.addEventListener('click', (event) => {
+			if (event.target === lightbox) {
+				closeLightbox();
+			}
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape' && lightbox.classList.contains('is-open')) {
+				closeLightbox();
+			}
+		});
+	}
+</script>
+
+<style>
+	.hero {
+		max-width: 48rem;
+		margin-bottom: 3.2rem;
+	}
+
+	.title-row {
+		display: flex;
+		justify-content: flex-start;
+		align-items: flex-start;
+		gap: 0.85rem;
+	}
+
+	.title-row img {
+		width: clamp(2.3rem, 6vw, 3.5rem);
+		height: clamp(2.3rem, 6vw, 3.5rem);
+	}
+
+	.eyebrow {
+		margin: 0.65rem 0 0;
+		text-transform: uppercase;
+		letter-spacing: 0.18em;
+		font-size: 0.76rem;
+		font-weight: 700;
+		color: var(--aqua);
+	}
+
+	h1 {
+		margin: 0;
+		font-size: clamp(2.4rem, 7vw, 4.8rem);
+		line-height: 1.05;
+		font-weight: 800;
+		color: var(--yellow);
+	}
+
+	.intro {
+		margin: 2rem 0 0;
+		max-width: 44rem;
+		color: var(--ink-soft);
+		line-height: 1.7;
+	}
+
+	.featured-projects {
+		padding-bottom: 0.5rem;
+	}
+
+	.section-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 1rem;
+		margin-bottom: 2rem;
+	}
+
+	h2 {
+		margin: 0;
+		font-size: clamp(1.6rem, 3vw, 2.1rem);
+		font-weight: 700;
+		color: var(--orange);
+	}
+
+	.section-header a {
+		font-size: 0.76rem;
+		font-weight: 700;
+		color: var(--green);
+		text-underline-offset: 0.2em;
+		text-transform: uppercase;
+		letter-spacing: 0.18em;
+	}
+
+	.section-header a span {
+		display: inline-block;
+		margin-left: 0.25rem;
+		text-decoration: none;
+	}
+
+	.section-header a:hover {
+		color: var(--yellow);
+	}
+
+	.project-card {
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+		background: var(--paper-strong);
+		border-radius: 20px;
+		border: 1px solid var(--line);
+		overflow: hidden;
+		box-shadow: var(--shadow);
+		animation: fade-up 760ms ease both;
+		animation-delay: 140ms;
+	}
+
+	.project-image-trigger {
+		padding: 0;
+		margin: 0;
+		border: 0;
+		background: none;
+		display: block;
+		width: 100%;
+		height: 100%;
+		cursor: zoom-in;
+	}
+
+	.project-card img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		min-height: 220px;
+		filter: saturate(0.86) contrast(1.03);
+	}
+
+	.lightbox {
+		position: fixed;
+		inset: 0;
+		display: none;
+		place-items: center;
+		padding: 2rem;
+		background: rgba(14, 13, 12, 0.86);
+		z-index: 100;
+		cursor: zoom-out;
+	}
+
+	.lightbox.is-open {
+		display: grid;
+	}
+
+	.lightbox-content {
+		width: min(80vw, 1200px);
+		max-height: 80vh;
+		cursor: default;
+	}
+
+	.lightbox-content img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		max-height: 80vh;
+		object-fit: contain;
+		border: 1px solid var(--line);
+		border-radius: 12px;
+		box-shadow: 0 24px 40px rgba(0, 0, 0, 0.45);
+	}
+
+	.project-copy {
+		padding: clamp(1.2rem, 3vw, 1rem);
+		display: grid;
+		align-content: center;
+		gap: 0.7rem;
+	}
+
+	h3 {
+		margin: 0 0 0.7em;
+		font-size: clamp(1.3rem, 2.5vw, 1.5rem);
+		color: var(--aqua);
+	}
+
+	.project-copy p {
+		font-size: 0.75rem;
+		margin: 0;
+		line-height: 1.7;
+		color: var(--normal);
+	}
+
+	.project-button {
+		margin-top: 1rem;
+		display: inline-flex;
+		justify-self: start;
+		padding: 0.35rem 0.75rem;
+		border-radius: 999px;
+		border: 1px solid var(--line);
+		background: var(--accent-soft);
+		color: var(--yellow);
+		text-decoration: none;
+	}
+
+	@media (max-width: 840px) {
+		.project-card {
+			grid-template-columns: 1fr;
+		}
+
+		.project-card img {
+			max-height: 320px;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.title-row {
+			gap: 0.6rem;
+		}
+
+		.section-header {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.35rem;
+		}
+	}
+</style>
