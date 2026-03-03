@@ -1,0 +1,108 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+	title="About Me • Console Craft"
+	description="About Ovi Ispas, developer and founder of Console Craft"
+>
+	<section class="about">
+		<div class="portrait-card">
+			<img src="/images/people/ovi.png" alt="Portrait of Ovi Ispas" loading="lazy" />
+		</div>
+
+		<div class="about-copy">
+			<p class="eyebrow">About Me</p>
+			<h1>Ovi Ispas</h1>
+			<p>I'm a Senior Software Engineer and hands-on Technical Lead with deep experience across TypeScript, the modern web platform, and developer tooling. I've spent much of my career building reliable, maintainable software for production environments, with a strong focus on simplicity, composability, and long-term operability.</p>
+			<p>My core expertise is in <strong>TypeScript and web engineering</strong>, and I’m increasingly applying that experience to <strong>Python and AI engineering</strong>, including LLM integrations, AI agents, workflow automation, and retrieval-based systems.</p>
+			<p>I'm particularly drawn to developer productivity, agentic tooling, and practical AI applications. Through Console Craft, I publish independent software products and utilities built around composability, strong defaults, and thoughtful design.</p>
+			<div class="about-actions">
+				<a class="action-button" href="https://github.com/console-craft" target="_blank" rel="noopener noreferrer">Github</a>
+				<a class="action-button" href="https://ro.linkedin.com/in/ovi-ispas" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+			</div>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.about {
+		display: grid;
+		grid-template-columns: minmax(230px, 320px) minmax(0, 1fr);
+		gap: clamp(1.2rem, 4vw, 2.6rem);
+		align-items: start;
+	}
+
+	.portrait-card {
+		border: 1px solid var(--line);
+		border-radius: 20px;
+		overflow: hidden;
+		background: var(--paper-strong);
+		box-shadow: var(--shadow);
+		animation: fade-up 760ms ease both;
+	}
+
+	.portrait-card img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.about-copy {
+		max-width: 42rem;
+	}
+
+	.eyebrow {
+		margin: 0;
+		text-transform: uppercase;
+		letter-spacing: 0.18em;
+		font-size: 0.76rem;
+		font-weight: 700;
+		color: var(--aqua);
+	}
+
+	h1 {
+		margin: 0.45rem 0 1rem;
+		font-size: clamp(2rem, 5vw, 3.2rem);
+		font-weight: 800;
+		color: var(--orange);
+	}
+
+	p {
+		margin: 0 0 2rem;
+		line-height: 1.75;
+		color: var(--ink-soft);
+	}
+
+	p strong {
+		color: var(--aqua);
+    	font-weight: 800;
+	}
+
+	.about-actions {
+		display: flex;
+		gap: 0.6rem;
+		flex-wrap: wrap;
+		margin-top: 0.4rem;
+	}
+
+	.action-button {
+		display: inline-flex;
+		padding: 0.45rem 0.75rem;
+		border-radius: 999px;
+		border: 1px solid var(--line);
+		background: var(--accent-soft);
+		color: var(--yellow);
+		text-decoration: none;
+	}
+
+	@media (max-width: 760px) {
+		.about {
+			grid-template-columns: 1fr;
+		}
+
+		.portrait-card {
+			max-width: 340px;
+		}
+	}
+</style>
