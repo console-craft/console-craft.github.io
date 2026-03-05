@@ -38,6 +38,7 @@ import Layout from '../layouts/Layout.astro';
 					It starts a local server, launches a real shell session, and gives you a clean, responsive UI to use it from your laptop or phone.<br/><br/>
 					<strong>Features:</strong> Mobile-friendly controls, custom themes and mono-space fonts, auth token, access logs, and fast single-binary install.
 				</p>
+    <div class="project-buttons">
 				<a
 					class="project-button"
 					href="https://console-craft.com/term-serve"
@@ -54,6 +55,7 @@ import Layout from '../layouts/Layout.astro';
 				>
 					Open on Github
 				</a>
+   </div>
 			</div>
 		</article>
 	</section>
@@ -275,6 +277,11 @@ import Layout from '../layouts/Layout.astro';
 		background: var(--accent-soft);
 		color: var(--yellow);
 		text-decoration: none;
+	}
+
+ .project-buttons {
+		display: flex;
+		gap: 10px;
 	}
 
 	@media (max-width: 840px) {
