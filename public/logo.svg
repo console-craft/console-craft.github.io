@@ -1,8 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-  <rect x="176.637" y="13.977" width="147.531" height="147.634" style="fill: #38bdf8"/>
-  <rect x="338.63" y="176.4" width="147.531" height="147.634" style="fill: #38bdf8"/>
-  <rect x="14.057" y="338.357" width="147.531" height="147.634" style="fill: #38bdf8"/>
-  <rect x="176.336" y="338.462" width="147.531" height="147.634" style="fill: #38bdf8"/>
-  <rect x="338.567" y="338.723" width="147.531" height="147.634" style="fill: #38bdf8"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 158 160" width="158" height="160">
+  <defs>
+    <rect id="frame" x="4" y="5" width="149" height="149" rx="24" ry="24" />
+    <clipPath id="clip-frame">
+      <use href="#frame" />
+    </clipPath>
+  </defs>
+
+  <use href="#frame" fill="#34302D" />
+
+  <g clip-path="url(#clip-frame)">
+    <rect x="56" y="9" width="46" height="45" fill="#D4BE97" />
+    <rect x="105" y="57" width="47" height="46" fill="#D6B37B" />
+    <rect x="8" y="106" width="45" height="45" fill="#ADB79E" />
+    <rect x="56" y="106" width="46" height="45" fill="#B3BA8E" />
+    <rect x="105" y="106" width="46" height="46" fill="#BAC583" />
+  </g>
+
+  <rect
+    x="6"
+    y="6"
+    width="146"
+    height="146"
+    rx="20"
+    ry="20"
+    fill="none"
+    stroke="#34302D"
+    stroke-width="3"
+  />
 </svg>
