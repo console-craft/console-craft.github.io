@@ -1,19 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import RobotScene from '../components/RobotScene';
 ---
 
-<Layout title="Console Craft • Independent software studio by Ovi Ispas" description="Independent software studio by Ovi Ispas">
+<Layout title="Console Craft • Independent software playground by Ovi Ispas" description="Independent software playground by Ovi Ispas">
 	<section class="hero">
-		<h1>Console Craft</h1>
-		<p class="intro">
-			Console Craft is an independent software studio by Ovi Ispas, focused on shipping apps and dev utilities 
-			with a focus on composability, reliability, and beautiful design.
-		</p>
+		<div>
+			<h1>Console Craft</h1>
+			<p class="intro">
+				Console Craft is an independent software playground by Ovi Ispas, focused on experiments, demos, and exploring AI-powered apps, developer tools, and emerging technologies.
+			</p>
+		</div>
+		<div class="robot"><RobotScene client:load /></div>
 	</section>
 
 	<section class="featured-projects" aria-labelledby="featured-projects-heading">
 		<div class="section-header">
-			<h2 id="featured-projects-heading">Projects</h2>
+			<h2 id="featured-projects-heading">My Latest Projects</h2>
 		</div>
 
 		<div class="project-grid">
@@ -34,6 +37,12 @@ import Layout from '../layouts/Layout.astro';
 				</button>
 				<div class="project-copy">
 					<h3>Tech Note Craft</h3>
+					<div class="tech-badges">
+						<span class="tech">AI Chat</span>
+						<span class="tech">OpenAI SDK</span>
+						<span class="tech">Markdown Rendering</span>
+						<span class="tech">Component Library</span>
+					</div>
 					<p>
 						Tech Note Craft turns local Markdown files into a browsable technical notes library.<br/><br/>
 						It groups notes by topic, renders expandable cards with syntax-highlighted code, and keeps learning workflows fast with quiz support and per-card AI tutor chats.<br/><br/>
@@ -41,7 +50,7 @@ import Layout from '../layouts/Layout.astro';
 					</p>
 					<div class="project-buttons">
 						<a
-							class="project-button"
+							class="project-button github"
 							href="https://github.com/console-craft/tech-note-craft"
 							target="_blank"
 							rel="noopener noreferrer"
@@ -77,6 +86,12 @@ import Layout from '../layouts/Layout.astro';
 				</button>
 				<div class="project-copy">
 					<h3>Term Serve</h3>
+					<div class="tech-badges">
+						<span class="tech">TypeScript</span>
+						<span class="tech">WebSocket</span>
+						<span class="tech">Shell</span>
+						<span class="tech">CLI</span>
+					</div>
 					<p>
 						Term Serve lets you securely open your terminal in any browser in seconds.<br/><br/> 
 						It starts a local server, launches a real shell session, and gives you a clean, responsive UI to use it from your laptop or phone.<br/><br/>
@@ -84,7 +99,7 @@ import Layout from '../layouts/Layout.astro';
 					</p>
 					<div class="project-buttons">
 						<a
-							class="project-button"
+							class="project-button github"
 							href="https://github.com/console-craft/term-serve"
 							target="_blank"
 							rel="noopener noreferrer"
@@ -98,6 +113,47 @@ import Layout from '../layouts/Layout.astro';
 							rel="noopener noreferrer"
 						>
 							Website
+						</a>
+					</div>
+				</div>
+			</article>
+
+			<article class="project-card">
+				<button
+					class="project-image-trigger"
+					type="button"
+					aria-label="Expand NVIM Neocraft screenshot"
+					aria-controls="project-lightbox"
+					data-lightbox-src="/images/projects/nvim-neocraft-project-screenshot.png"
+					data-lightbox-alt="Expand NVIM Neocraft screenshot"
+				>
+					<img
+						src="/images/projects/nvim-neocraft-project-screenshot.png"
+						alt="NVIM Neocraft screenshot"
+						loading="lazy"
+					/>
+				</button>
+				<div class="project-copy">
+					<h3>NVIM Neocraft</h3>
+					<div class="tech-badges">
+						<span class="tech">Dev Tools</span>
+						<span class="tech">Language Servers</span>
+						<span class="tech">IDE</span>
+						<span class="tech">Lua</span>
+					</div>
+					<p>
+						NVIM Neocraft is my personal Neovim 0.12+ setup, built around explicit Lua modules, native APIs, and a mini.nvim-first workflow.<br/><br/>
+						It combines fast file picking, sessions, completions, Treesitter, project-aware formatting, a floating terminal, and tuned LSP support for TypeScript and Python.<br/><br/>
+						<strong>Features:</strong> Mini-powered UI and navigation, OpenCode AI coding agent integration, Copilot inline completions, Diffview integration, Git worktrees, and bisect/rebase/cherry-pick helpers.
+					</p>
+					<div class="project-buttons">
+						<a
+							class="project-button github"
+							href="https://github.com/console-craft/nvim-neocraft"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Github
 						</a>
 					</div>
 				</div>
@@ -166,8 +222,29 @@ import Layout from '../layouts/Layout.astro';
 
 <style>
 	.hero {
-		max-width: 48rem;
 		margin-bottom: 3.2rem;
+		display: flex;
+		gap: 2rem;
+	}
+
+	.hero > div:first-child {
+		flex: 1;
+	}
+
+	.hero > .robot {
+		height: 400px;
+		width: 400px;
+		flex: 0 0 400px;
+		overflow: hidden;
+	}
+
+	@media (max-width: 840px) {
+		.hero {
+			flex-direction: column;
+			align-items: center;
+			gap: 1.5rem;
+			margin-bottom: 2.5rem;
+		}
 	}
 
 	.title-row {
@@ -192,10 +269,11 @@ import Layout from '../layouts/Layout.astro';
 	}
 
 	h1 {
-		margin: 0;
+		margin: 2rem 0 4rem;
 		font-size: clamp(2.4rem, 7vw, 4.8rem);
 		line-height: 1.05;
 		font-weight: 800;
+		text-transform: uppercase;
 		color: var(--yellow);
 	}
 
@@ -203,7 +281,8 @@ import Layout from '../layouts/Layout.astro';
 		margin: 2rem 0 0;
 		max-width: 44rem;
 		color: var(--ink-soft);
-		line-height: 1.7;
+		line-height: 1.8em;
+		font-size: 1.2rem;
 	}
 
 	.featured-projects {
@@ -220,14 +299,14 @@ import Layout from '../layouts/Layout.astro';
 		justify-content: space-between;
 		align-items: baseline;
 		gap: 1rem;
-		margin-bottom: 2rem;
+		margin-bottom: 1rem;
 	}
 
 	h2 {
 		margin: 0;
 		font-size: clamp(1.6rem, 3vw, 2.1rem);
-		font-weight: 700;
-		color: var(--orange);
+		font-weight: 800;
+		text-transform: uppercase;
 	}
 
 	.section-header a {
@@ -263,6 +342,16 @@ import Layout from '../layouts/Layout.astro';
 		box-shadow: var(--shadow);
 		animation: fade-up 760ms ease both;
 		animation-delay: 140ms;
+		transition: scale 220ms ease, translate 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.project-card:hover {
+			scale: 1.04;
+			translate: 0 -8px;
+			border-color: rgba(202, 154, 112, 0.62);
+			box-shadow: 0 18px 34px rgba(0, 0, 0, 0.26);
+		}
 	}
 
 	.project-card-image-right {
@@ -339,9 +428,10 @@ import Layout from '../layouts/Layout.astro';
 	}
 
 	h3 {
-		margin: 0 0 0.7em;
+		margin: 0 0 0.5em;
 		font-size: clamp(1.3rem, 2.5vw, 1.5rem);
-		color: var(--aqua);
+		color: var(--blue);
+		font-weight: 800;
 	}
 
 	.project-copy p {
@@ -363,9 +453,27 @@ import Layout from '../layouts/Layout.astro';
 		text-decoration: none;
 	}
 
+	.project-button.github {
+		border-color: var(--blue);
+		background-color: var(--blue-soft);
+		color: var(--blue);
+	}
+
  .project-buttons {
 		display: flex;
 		gap: 10px;
+	}
+
+	.tech {
+		display: inline-block;
+		width: auto;
+		padding: 0.25rem 0.5rem;
+		border-radius: 999px;
+		background: var(--yellow);
+		color: var(--background);
+		font-size: 0.75rem;
+		font-weight: 700;
+		margin: 0.3rem 0.1rem;
 	}
 
 	@media (max-width: 840px) {

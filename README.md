@@ -2,6 +2,6 @@
 
 ## Independent software studio by Ovi Ispas
 
-Console Craft is an independent software studio by Ovi Ispas, focused on shipping apps and dev utilities with a focus on composability, reliability, and beautiful design.
+Console Craft is an independent software playground by Ovi Ispas, focused on experiments, demos, and exploring AI-powered apps, developer tools, and emerging technologies.
 
-Less slop, more craft.
+Born in the console, evolved to production.

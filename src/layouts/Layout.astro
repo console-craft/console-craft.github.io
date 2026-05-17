@@ -6,7 +6,7 @@ interface Props {
 
 const {
 	title,
-	description = 'Independent software studio by Ovi Ispas.',
+	description = 'Independent software playground by Ovi Ispas.',
 }: Props = Astro.props;
 
 const navLinks = [
@@ -15,7 +15,7 @@ const navLinks = [
 ];
 
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
-const brandLabel = pathname === '/' ? 'Less slop, more craft' : 'Console Craft';
+const brandLabel = pathname === '/' ? 'Born in the console, evolved to production.' : 'Console Craft';
 const year = new Date().getFullYear();
 ---
 
@@ -104,10 +104,18 @@ const year = new Date().getFullYear();
 		font-family: 'JetBrains Mono', monospace;
 		color: var(--ink);
 		background:
-			radial-gradient(circle at 6% -8%, rgba(214, 179, 123, 0.18) 0%, transparent 42%),
-			radial-gradient(circle at 100% 0%, rgba(212, 165, 153, 0.15) 0%, transparent 44%),
-			radial-gradient(circle at 84% 100%, rgba(186, 197, 132, 0.14) 0%, transparent 40%),
-			var(--paper);
+			radial-gradient(circle at 12% 0%, color-mix(in oklab, #7daea3 16%, transparent), transparent 40%),
+			radial-gradient(circle at 88% 8%, rgba(181, 118, 20, 0.1), transparent 38%),
+			#302e2c;
+		background-repeat: no-repeat;
+		background-size:
+			100vw 100vh,
+			100vw 100vh,
+			auto;
+		background-position:
+			top left,
+			top left,
+			top left;
 	}
 
 	a {
@@ -158,12 +166,12 @@ const year = new Date().getFullYear();
 		border-radius: 999px;
 		border: 1px solid transparent;
 		text-decoration: none;
-		color: var(--ink-soft);
+		color: var(--orange);
 		transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease;
 	}
 
-	.site-nav a:hover {
-		color: var(--green);
+	.site-nav a:not(.active):hover {
+		text-decoration: underline;
 	}
 
 	.site-nav a.active {
