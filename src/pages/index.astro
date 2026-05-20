@@ -20,6 +20,50 @@ import RobotScene from '../components/RobotScene';
 		</div>
 
 		<div class="project-grid">
+			<article class="project-card project-card-image-right">
+				<div class="project-copy">
+					<h3>Re-mind</h3>
+					<div class="tech-badges">
+						<span class="tech">Voice AI Agent</span>
+						<span class="tech">VAPI</span>
+						<span class="tech">FastAPI</span>
+						<span class="tech">React</span>
+					</div>
+					<p>
+						Re-mind is a voice-first app built for quick phone-friendly, AI-powered reminders capture.<br/><br/>
+						Tap once, speak naturally, and the AI agent creates, reviews, updates, or deletes scheduled reminders through a FastAPI backend with a dedicated tool-calls webhook.<br/><br/>
+						<strong>Features:</strong> Voice reminder capture, webhook-driven tool calls, live SSE refresh, date-only and exact-time reminders, optional notes and durations, and schedule conflict checks.
+					</p>
+					<div class="project-buttons">
+						<a
+							class="project-button github"
+							href="https://github.com/console-craft/re-mind"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Github
+						</a>
+						<a
+							class="project-button"
+							href="https://console-craft.github.io/re-mind/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Website
+						</a>
+					</div>
+				</div>
+				<div class="project-video">
+					<iframe
+						src="https://www.youtube.com/embed/KZLPutERQGk"
+						title="Re-mind demo video"
+						loading="lazy"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+						allowfullscreen
+					></iframe>
+				</div>
+			</article>
+
 			<article class="project-card">
 				<button
 					class="project-image-trigger"
@@ -367,6 +411,12 @@ import RobotScene from '../components/RobotScene';
 		order: 2;
 	}
 
+	.project-card-image-right .project-video {
+		order: 2;
+		border-right: 0;
+		border-left: 1px solid var(--line);
+	}
+
 	.project-image-trigger {
 		padding: 0;
 		margin: 0;
@@ -386,6 +436,20 @@ import RobotScene from '../components/RobotScene';
 		min-height: 220px;
 		filter: saturate(0.86) contrast(1.03);
 		border-right: 1px solid var(--line);
+	}
+
+	.project-video {
+		min-height: 220px;
+		border-right: 1px solid var(--line);
+		background: var(--background);
+	}
+
+	.project-video iframe {
+		display: block;
+		width: 100%;
+		height: 100%;
+		min-height: 320px;
+		border: 0;
 	}
 
 	.lightbox {
@@ -485,8 +549,18 @@ import RobotScene from '../components/RobotScene';
 			order: initial;
 		}
 
+		.project-card-image-right .project-video {
+			order: initial;
+			border-left: 0;
+		}
+
 		.project-card img {
 			max-height: 320px;
+		}
+
+		.project-video {
+			border-right: 0;
+			border-bottom: 1px solid var(--line);
 		}
 	}
 
