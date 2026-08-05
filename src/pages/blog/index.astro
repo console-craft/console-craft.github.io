@@ -1,0 +1,288 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import heroImage from '../../assets/blog/article-hero.jpg';
+import SeriesCard from '../../components/SeriesCard.astro';
+import Layout from '../../layouts/Layout.astro';
+
+const posts = (await getCollection('blog', ({ data }) => data.upcoming || import.meta.env.DEV || !data.draft))
+	.sort((a, b) => (b.data.pubDate?.valueOf() ?? 0) - (a.data.pubDate?.valueOf() ?? 0));
+const dateFormatter = new Intl.DateTimeFormat('en', {
+	year: 'numeric',
+	month: 'short',
+	day: 'numeric',
+});
+const groups = new Map<string, { title: string; posts: typeof posts }>();
+const standalonePosts = posts.filter(({ data }) => !data.series);
+
+for (const post of posts) {
+	if (!post.data.series) continue;
+	const seriesSlug = post.id.split('/')[0];
+	const group = groups.get(seriesSlug) ?? { title: post.data.series.title, posts: [] };
+	group.posts.push(post);
+	groups.set(seriesSlug, group);
+}
+
+const seriesGroups = [...groups.entries()]
+	.map(([slug, group]) => ({
+		slug,
+		...group,
+		posts: group.posts.sort((a, b) => (a.data.series?.order ?? 0) - (b.data.series?.order ?? 0)),
+		latestDate: Math.max(
+			0,
+			...group.posts
+				.filter(({ data }) => !data.upcoming)
+				.map(({ data }) => data.pubDate?.valueOf() ?? 0),
+		),
+	}))
+	.sort((a, b) => b.latestDate - a.latestDate);
+---
+
+<Layout title="Blog • Console Craft" description="Long-form explorations of developer tools, AI engineering, and the systems behind useful software. I write about how technologies shape the code we build, the workflows we adopt, and the way we think about software design. ">
+	<section class="blog-intro">
+		<div class="blog-intro-copy">
+			<h1 class="uppercase">Blog</h1>
+			<p>Long-form explorations of developer tools, AI engineering, and the systems behind useful software. I write about how technologies shape the code we build, the workflows we adopt, and the way we think about software design. </p>
+		</div>
+		<div class="blog-intro-image">
+			<Image
+				src={heroImage}
+				alt="Futuristic computer workshop filled with screens and technical equipment"
+				width={400}
+				height={400}
+				format="webp"
+				quality={80}
+				loading="eager"
+			/>
+		</div>
+	</section>
+
+	{
+		posts.length === 0 ? (
+			<section class="empty-blog">
+				<h2>First article in progress.</h2>
+				<p>The workshop is active. The notes will follow.</p>
+			</section>
+		) : (
+			<div class="blog-sections">
+				{seriesGroups.map((group) => (
+					<SeriesCard
+						slug={group.slug}
+						title={group.title}
+						posts={group.posts}
+						titleHref={`/blog/${group.slug}/`}
+					/>
+				))}
+
+				{standalonePosts.length > 0 && (
+					<section class="standalone-posts" aria-labelledby="standalone-heading">
+						<header>
+							<h2 id="standalone-heading">Standalone articles</h2>
+						</header>
+						<div class="standalone-list">
+							{standalonePosts.map((post) => (
+								<a class="standalone-post" href={`/blog/${post.id}/`}>
+									<div>
+										<h3>{post.data.title}</h3>
+										<p>{post.data.description}</p>
+									</div>
+									{post.data.pubDate && <time datetime={post.data.pubDate.toISOString()}>{dateFormatter.format(post.data.pubDate)}</time>}
+								</a>
+							))}
+						</div>
+					</section>
+				)}
+			</div>
+		)
+	}
+</Layout>
+
+<style>
+	.blog-intro {
+		display: flex;
+		/* align-items: center; */
+		gap: clamp(2rem, 6vw, 4rem);
+		padding: clamp(2rem, 8vw, 5.5rem) 0 clamp(3rem, 8vw, 5rem);
+	}
+
+	.blog-intro-copy {
+		flex: 1;
+		max-width: 48rem;
+	}
+
+	.blog-intro-image {
+		position: relative;
+		flex: 0 0 clamp(185px, 18vw, 300px);
+		width: clamp(125px, 12vw, 200px);
+		aspect-ratio: 1;
+		overflow: hidden;
+		border: 1px solid var(--line);
+		border-radius: 20px;
+		background: var(--paper-strong);
+		box-shadow: var(--shadow);
+	}
+
+	.blog-intro-image::after {
+		position: absolute;
+		inset: 0;
+		content: '';
+		background:
+			linear-gradient(0deg, rgba(41, 39, 37, 0.96), rgba(41, 39, 37, 0.2) 78%),
+			linear-gradient(90deg, rgba(41, 39, 37, 0.78), rgba(41, 39, 37, 0.06) 76%);
+		pointer-events: none;
+	}
+
+	.blog-intro-image img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		filter: saturate(0.86) contrast(1.03);
+	}
+
+	.eyebrow {
+		margin: 0 0 1rem;
+		color: var(--green);
+		font-size: 0.82rem;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.uppercase { text-transform: uppercase; }
+
+	h1 {
+		margin: 0;
+		max-width: 13ch;
+		color: var(--yellow);
+		font-size: clamp(2.3rem, 7vw, 5rem);
+		line-height: 1.02;
+		letter-spacing: -0.055em;
+	}
+
+	.blog-intro-copy > p:last-child {
+		max-width: 62ch;
+		margin: 2rem 0 0;
+		color: var(--ink-soft);
+		font-size: clamp(0.95rem, 2vw, 1.08rem);
+		line-height: 1.75;
+	}
+
+	.blog-sections {
+		display: grid;
+		gap: 1.5rem;
+	}
+
+	.standalone-posts,
+	.empty-blog {
+		border: 1px solid var(--line);
+		border-radius: 20px;
+		background: color-mix(in oklab, var(--paper-strong) 88%, transparent);
+		box-shadow: var(--shadow);
+		overflow: hidden;
+	}
+
+	.standalone-posts {
+		margin-top: 3rem;
+		transition: scale 220ms ease, translate 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+	}
+
+	@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+		.standalone-posts:hover {
+			scale: 1.04;
+			translate: 0 -8px;
+			border-color: rgba(202, 154, 112, 0.62);
+			box-shadow: 0 18px 34px rgba(0, 0, 0, 0.26);
+		}
+	}
+
+	h2,
+	h3 {
+		margin: 0;
+		color: var(--ink-soft);
+	}
+
+	h2 {
+		color: var(--normal);
+		text-transform: uppercase;
+	}
+
+	.standalone-post p,
+	.empty-blog p {
+		margin: 0.55rem 0 0;
+		color: var(--normal);
+		font-size: 0.85rem;
+		line-height: 1.65;
+	}
+
+	.empty-blog {
+		padding: clamp(1.3rem, 4vw, 2.2rem);
+	}
+
+	.standalone-posts > header {
+		padding: clamp(1.3rem, 4vw, 2.2rem);
+		border-bottom: 1px solid var(--line);
+	}
+
+	.standalone-post {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 1rem;
+		align-items: start;
+		padding: 1.25rem clamp(1.3rem, 4vw, 2.2rem);
+		text-decoration: none;
+		transition: background-color 180ms ease;
+	}
+
+	.standalone-post + .standalone-post {
+		border-top: 1px solid var(--line);
+	}
+
+	.standalone-post:hover {
+		background: var(--accent-soft);
+	}
+
+	.standalone-post h3 {
+		font-size: 1rem;
+		line-height: 1.45;
+	}
+
+	.standalone-post time {
+		padding: 0.08rem 0.4rem;
+		border-radius: 999px;
+		background-color: var(--yellow);
+		color: #333;
+		font-size: 0.75rem;
+		line-height: 1.5;
+	}
+
+	@media (max-width: 720px) {
+		.blog-intro {
+			padding-top: 2.5rem;
+		}
+	}
+
+	@media (max-width: 840px) {
+		.blog-intro {
+			flex-direction: column;
+			align-items: center;
+			gap: 1.5rem;
+		}
+
+		.blog-intro-copy {
+			width: 100%;
+		}
+
+		.blog-intro-image {
+			flex-basis: auto;
+			width: min(400px, 100%);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.standalone-posts,
+		.standalone-post {
+			transition: none;
+		}
+	}
+</style>

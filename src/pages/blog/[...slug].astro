@@ -1,0 +1,41 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BlogPost from '../../layouts/BlogPost.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection(
+		'blog',
+		({ data }) => import.meta.env.DEV
+			? !data.upcoming || data.draft
+			: !data.draft && !data.upcoming,
+	);
+
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}));
+}
+
+interface Props {
+	post: CollectionEntry<'blog'>;
+}
+
+const { post }: Props = Astro.props;
+const { Content, headings } = await render(post);
+const publishedPosts = await getCollection(
+	'blog',
+	({ data }) => import.meta.env.DEV
+		? !data.upcoming || data.draft
+		: !data.draft && !data.upcoming,
+);
+const seriesRoot = post.id.split('/').slice(0, -1).join('/');
+const seriesPosts = post.data.series
+	? publishedPosts
+		.filter((candidate) => candidate.data.series && candidate.id.startsWith(`${seriesRoot}/`))
+		.sort((a, b) => (a.data.series?.order ?? 0) - (b.data.series?.order ?? 0))
+	: [];
+---
+
+<BlogPost post={post} headings={headings} seriesPosts={seriesPosts}>
+	<Content />
+</BlogPost>
