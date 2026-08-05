@@ -1,0 +1,70 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+	headings: MarkdownHeading[];
+	mobile?: boolean;
+}
+
+const { headings, mobile = false }: Props = Astro.props;
+const items = headings.filter(({ depth }) => depth === 2 || depth === 3);
+const sections: Array<{ heading: MarkdownHeading; children: MarkdownHeading[] }> = [];
+
+for (const heading of items) {
+	if (heading.depth === 2) {
+		sections.push({ heading, children: [] });
+	} else {
+		sections[sections.length - 1]?.children.push(heading);
+	}
+}
+---
+
+{
+	items.length > 0 && (
+		mobile ? (
+			<details class="content-map content-map-mobile">
+				<summary>On this page</summary>
+				<nav aria-label="Article contents">
+					<ol>
+						{sections.map(({ heading, children }) => (
+							<li>
+								<a href={`#${heading.slug}`}>{heading.text}</a>
+								{children.length > 0 && (
+									<ul>
+										{children.map((child) => (
+											<li class="nested">
+												<a href={`#${child.slug}`}>{child.text}</a>
+											</li>
+										))}
+									</ul>
+								)}
+							</li>
+						))}
+					</ol>
+				</nav>
+			</details>
+		) : (
+			<aside class="content-map content-map-desktop">
+				<p>On this page</p>
+				<nav aria-label="Article contents">
+					<ol>
+						{sections.map(({ heading, children }) => (
+							<li>
+								<a href={`#${heading.slug}`}>{heading.text}</a>
+								{children.length > 0 && (
+									<ul>
+										{children.map((child) => (
+											<li class="nested">
+												<a href={`#${child.slug}`}>{child.text}</a>
+											</li>
+										))}
+									</ul>
+								)}
+							</li>
+						))}
+					</ol>
+				</nav>
+			</aside>
+		)
+	)
+}

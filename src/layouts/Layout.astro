@@ -2,22 +2,35 @@
 interface Props {
 	title: string;
 	description?: string;
+	canonical?: string;
+	pageType?: 'website' | 'article';
+	socialImage?: string;
+	publishedDate?: Date;
+	updatedDate?: Date;
 }
 
 const {
 	title,
 	description = 'Independent software playground by Ovi Ispas.',
+	canonical,
+	pageType = 'website',
+	socialImage,
+	publishedDate,
+	updatedDate,
 }: Props = Astro.props;
 
 const navLinks = [
-	{ href: '/', label: 'Home' },
-	{ href: '/about-me#talks', label: 'Talks' },
-	{ href: '/about-me', label: 'About' },
+	{ href: '/', label: 'Home', matchChildren: false },
+	{ href: '/blog', label: 'Blog', matchChildren: true },
+	{ href: '/about-me#talks', label: 'Talks', matchChildren: false },
+	{ href: '/about-me', label: 'About', matchChildren: false },
 ];
 
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 const brandLabel = pathname === '/' ? 'Born in the console, evolved to production.' : 'Console Craft';
 const year = new Date().getFullYear();
+const canonicalUrl = new URL(canonical ?? Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const socialImageUrl = socialImage ? new URL(socialImage, Astro.site ?? Astro.url.origin) : undefined;
 ---
 
 <!doctype html>
@@ -27,6 +40,19 @@ const year = new Date().getFullYear();
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="description" content={description} />
 		<meta name="generator" content={Astro.generator} />
+		<link rel="canonical" href={canonicalUrl} />
+		<meta property="og:site_name" content="Console Craft" />
+		<meta property="og:type" content={pageType} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta name="twitter:card" content={socialImageUrl ? 'summary_large_image' : 'summary'} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		{socialImageUrl && <meta property="og:image" content={socialImageUrl} />}
+		{socialImageUrl && <meta name="twitter:image" content={socialImageUrl} />}
+		{publishedDate && <meta property="article:published_time" content={publishedDate.toISOString()} />}
+		{updatedDate && <meta property="article:modified_time" content={updatedDate.toISOString()} />}
 		<link rel="icon" href="/favicon.ico" sizes="any" />
 		<link rel="icon" type="image/svg+xml" href="/logo.svg" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -46,10 +72,18 @@ const year = new Date().getFullYear();
 				<nav class="site-nav" aria-label="Main">
 					{
 						navLinks.map((link) => {
-							const linkPath = link.href.replace(/\/$/, '') || '/';
+							const [linkHref, linkSection] = link.href.split('#');
+							const linkPath = linkHref.replace(/\/$/, '') || '/';
+							const isActive = !linkSection && (pathname === linkPath
+								|| (link.matchChildren && pathname.startsWith(`${linkPath}/`)));
 
 							return (
-								<a href={link.href} class={pathname === linkPath ? 'active' : undefined}>
+								<a
+									href={link.href}
+									class={isActive ? 'active' : undefined}
+									aria-current={isActive ? 'page' : undefined}
+									data-nav-section={linkSection}
+								>
 									{link.label}
 								</a>
 							);
@@ -74,6 +108,31 @@ const year = new Date().getFullYear();
 		</button>
 
 		<script is:inline>
+			const aboutLink = document.querySelector('.site-nav a[href="/about-me"]');
+			const talksLink = document.querySelector('.site-nav a[data-nav-section="talks"]');
+
+			if (aboutLink instanceof HTMLAnchorElement && talksLink instanceof HTMLAnchorElement) {
+				const updateAboutNavigation = () => {
+					const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+					const isAboutPage = currentPath === '/about-me';
+					const isAtTop = window.scrollY <= 1;
+					const isTalksSection = isAboutPage && !isAtTop && window.location.hash === '#talks';
+
+					aboutLink.classList.toggle('active', isAboutPage && !isTalksSection);
+					talksLink.classList.toggle('active', isTalksSection);
+
+					if (isAboutPage && !isTalksSection) aboutLink.setAttribute('aria-current', 'page');
+					else aboutLink.removeAttribute('aria-current');
+
+					if (isTalksSection) talksLink.setAttribute('aria-current', 'location');
+					else talksLink.removeAttribute('aria-current');
+				};
+
+				window.addEventListener('hashchange', updateAboutNavigation);
+				window.addEventListener('scroll', updateAboutNavigation, { passive: true });
+				updateAboutNavigation();
+			}
+
 			const backToTop = document.querySelector('.back-to-top');
 
 			if (backToTop instanceof HTMLButtonElement) {
@@ -110,6 +169,7 @@ const year = new Date().getFullYear();
 		--paper: var(--background);
 		--paper-strong: #3b3734;
 		--ink: var(--normal);
+		--ink-normal: var(--ink);
 		--ink-soft: var(--blue);
 		--line: rgba(202, 154, 112, 0.42);
 		--accent: var(--green);
@@ -186,6 +246,7 @@ const year = new Date().getFullYear();
 	.site-nav {
 		display: inline-flex;
 		gap: 0.5rem;
+		flex-wrap: wrap;
 	}
 
 	.site-nav a {
@@ -309,6 +370,11 @@ const year = new Date().getFullYear();
 		.site-nav {
 			margin-top: 1rem;
 			width: 100%;
+			gap: 0.35rem;
+		}
+
+		.site-nav a {
+			padding-inline: 0.65rem;
 		}
 
 		.site-main {

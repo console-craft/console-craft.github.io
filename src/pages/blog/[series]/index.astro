@@ -1,0 +1,66 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import SeriesCard from '../../../components/SeriesCard.astro';
+import Layout from '../../../layouts/Layout.astro';
+
+interface Props {
+	slug: string;
+	title: string;
+	posts: CollectionEntry<'blog'>[];
+}
+
+export async function getStaticPaths() {
+	const posts = await getCollection(
+		'blog',
+		({ data }) => data.upcoming || import.meta.env.DEV || !data.draft,
+	);
+	const groups = new Map<string, { title: string; posts: typeof posts }>();
+
+	for (const post of posts) {
+		if (!post.data.series) continue;
+		const slug = post.id.split('/')[0];
+		const group = groups.get(slug) ?? { title: post.data.series.title, posts: [] };
+		group.posts.push(post);
+		groups.set(slug, group);
+	}
+
+	return [...groups.entries()].map(([slug, group]) => ({
+		params: { series: slug },
+		props: { slug, ...group },
+	}));
+}
+
+const { slug, title, posts }: Props = Astro.props;
+---
+
+<Layout
+	title={`${title} Series • Console Craft`}
+	description={`Explore every article in the ${title} series on Console Craft.`}
+>
+	<div class="series-page">
+		<a class="series-back" href="/blog">← Blog Index</a>
+		<SeriesCard slug={slug} title={title} posts={posts} as="h1" />
+	</div>
+</Layout>
+
+<style>
+	.series-page {
+		padding: clamp(2rem, 8vw, 5.5rem) 0;
+	}
+
+	.series-back {
+		display: inline-block;
+		margin-bottom: 3rem;
+		color: var(--yellow);
+		font-size: 1rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.series-back:hover {
+		color: var(--yellow);
+		/* text-decoration: underline; */
+	}
+</style>
