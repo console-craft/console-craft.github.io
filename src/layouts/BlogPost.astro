@@ -57,7 +57,7 @@ const optimizedHero = await getImage({ src: heroImage, width: 1600, format: 'web
 		)}
 
 		{
-			post.data.series && seriesPosts.length > 1 && (
+			post.data.series && (
 				<nav class="series-navigation top" aria-label={`${post.data.series.title} series navigation`}>
 					<p class="series-breadcrumb">
 						<a href="/blog">Blog</a>
@@ -83,7 +83,7 @@ const optimizedHero = await getImage({ src: heroImage, width: 1600, format: 'web
 		)}
 
 		{
-			post.data.series && seriesPosts.length > 1 && (
+			post.data.series && (
 				<nav class="series-navigation" aria-label={`${post.data.series.title} series navigation`}>
 					<p class="series-breadcrumb">
 						<a href="/blog">Blog</a>

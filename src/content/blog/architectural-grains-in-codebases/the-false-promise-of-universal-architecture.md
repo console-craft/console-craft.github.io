@@ -1,7 +1,7 @@
 ---
 title: The False Promise of Universal Architecture
 description: Why great React code does not look like great Python code.
-pubDate: 2026-08-04
+pubDate: 2026-08-07
 series:
   title: Architectural Grains in Codebases
   order: 1
@@ -85,7 +85,7 @@ function ProductsPage({ products }: { products: Product[] }) {
 
 Perhaps `query` should not even be component state. If it represents a searchable page that users can bookmark, share, navigate back to, or restore after refreshing, it may belong in the URL.
 
-That is not a syntax correction. It is not even a normal refactor in the classic “extract method” sense.
+That is not a syntax correction. It is not even a normal refactor in the classic "extract method" sense.
 
 It is a change in how the application is being modelled.
 
@@ -241,11 +241,7 @@ None of these layouts proves anything on its own.
 
 A feature-oriented React structure can still contain terrible React. A layered architecture can be exactly what a large application needs. A flat Python package can become an unstructured swamp with excellent line-of-sight across all the mud.
 
-But directory structures are not neutral.
-
-They are fossils of the team’s mental model.
-
-They tell us what the authors consider important enough to become a category. They reveal whether the team primarily sees the system as features, layers, processes, types, resources, components, or technical roles.
+> However, directory structures are not neutral. They are fossils of the team’s mental model. They tell us what the authors consider important enough to become a category. They reveal whether the team primarily sees the system as features, layers, processes, types, resources, components, or technical roles.
 
 The silhouette is evidence, not a verdict.
 
@@ -277,7 +273,7 @@ They help us reason about software regardless of whether we are writing TypeScri
 
 The physical structures used to satisfy those principles are not universal.
 
-“Keep related things together” could mean:
+"Keep related things together" could mean:
 
 | Ecosystem | A plausible local expression |
 |---|---|
@@ -287,7 +283,7 @@ The physical structures used to satisfy those principles are not universal.
 | Rust | Group an enum, its associated data, and its `impl` blocks |
 | C# | Place behavior behind an object or service boundary |
 
-“Depend on capabilities rather than concrete implementations” could become:
+"Depend on capabilities rather than concrete implementations" could become:
 
 ```ts
 type Clock = {
@@ -295,7 +291,7 @@ type Clock = {
 }
 ```
 
-Because TypeScript is structurally typed, a value does not need a declared nominal relationship with `Clock`. It only needs the required shape. That design follows how JavaScript objects are normally created and passed around ([TypeScript for Java/C# Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)).
+Because TypeScript is structurally typed, a value does not need a declared nominal relationship with `Clock`. It only needs the required shape. That design follows how JavaScript objects are normally created and passed around ([TypeScript for Java/C# Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes-oop.html#co-learning-javascript)).
 
 The same principle in Python might use a protocol:
 
@@ -322,9 +318,7 @@ trait Clock {
 
 Unless the possible clocks form a small, closed set, in which case an enum may be the simpler and more honest model.
 
-The principle crosses the border.
-
-Its physical form changes clothes.
+> The principle crosses the border. Its physical form changes clothes.
 
 This is where many architecture discussions go wrong. We correctly discover a useful principle, then accidentally canonize the structure that expressed it in one particular ecosystem.
 
@@ -433,13 +427,13 @@ A component tree can erase a controller-view coordination layer.
 
 A context manager can erase repeated setup and cleanup ceremony.
 
-Learning patterns without learning local idioms can therefore make us worse for a while. We start seeing the named machinery everywhere, even when the host language has already compressed the idea into something smaller.
+> Learning patterns without learning local idioms can therefore make us worse for a while. We start seeing the named machinery everywhere, even when the host language has already compressed the idea into something smaller.
 
 ## Architecture has a grain
 
 Wood has a grain.
 
-You can cut against it. Sometimes you need to. But it requires more force, damages the surface more easily, and tends to produce extra work for everyone holding the tools.
+> You can cut against it. Sometimes you need to. But it requires more force, damages the surface more easily, and tends to produce extra work for everyone holding the tools.
 
 Languages and frameworks have a grain too.
 
@@ -483,7 +477,7 @@ A router is not merely a switch statement if URLs represent navigable applicatio
 
 FastAPI’s request lifecycle, dependency system, validation model, and OpenAPI integration affect sensible application boundaries.
 
-The more powerful the framework, the less credible it becomes to call it an implementation detail while designing the “real architecture” somewhere above it.
+The more powerful the framework, the less credible it becomes to call it an implementation detail while designing the "real architecture" somewhere above it.
 
 At some point, the detail starts voting.
 
@@ -503,15 +497,11 @@ When a tool can enforce an invariant directly, rebuilding that invariant through
 
 ### Ecosystem history
 
-Communities accumulate scar tissue.
-
-React developers learn that unnecessary Effects create synchronized-state problems.
-
-Python developers become wary of class hierarchies that hide simple control flow.
-
-Rust developers discover that cloning values until the borrow checker becomes quiet may compile while avoiding the actual ownership question.
-
-TypeScript developers learn that enough generic parameters can summon a local weather system above the type declaration.
+> Communities accumulate scar tissue.
+> - React developers learn that unnecessary Effects create synchronized-state problems.
+> - Python developers become wary of class hierarchies that hide simple control flow.
+> - Rust developers discover that cloning values until the borrow checker becomes quiet may compile while avoiding the actual ownership question.
+> - TypeScript developers learn that enough generic parameters can summon a local weather system above the type declaration.
 
 Idioms are not arbitrary fashion. They are the ecosystem’s accumulated response to its own primitives, costs, mistakes, and discoveries.
 
@@ -521,11 +511,7 @@ They change over time, of course. Yesterday’s best practice may become today�
 
 This leads to the most interesting part.
 
-Good developers often write bad code when they enter an unfamiliar ecosystem.
-
-Not because they forgot how to program.
-
-Because they did not forget.
+> Good developers often write bad code when they enter an unfamiliar ecosystem. Not because they forgot how to program. Because they did not forget.
 
 An experienced developer arrives with deeply trained instincts:
 
@@ -534,7 +520,7 @@ An experienced developer arrives with deeply trained instincts:
 - where state belongs
 - how dependencies should be injected
 - what kind of duplication is dangerous
-- what “separation of concerns” looks like
+- what "separation of concerns" looks like
 - which abstractions signal a serious codebase
 - how many files a respectable feature ought to require
 
@@ -594,11 +580,9 @@ A Python developer may enter Rust and initially experience every explicit owners
 
 A Rust developer may enter TypeScript and model every possible invalid state, including states the product could harmlessly tolerate and the runtime will receive from JavaScript anyway.
 
-A React developer may turn ordinary backend operations into “hooks” in spirit, with tiny wrappers around tiny wrappers until the request path resembles a component tree nobody can render.
+A React developer may turn ordinary backend operations into "hooks" in spirit, with tiny wrappers around tiny wrappers until the request path resembles a component tree nobody can render.
 
-None of these developers is foolish.
-
-Their expertise has a native accent.
+> None of these developers is foolish. Their expertise has a native accent.
 
 ## Why experienced developers may be more vulnerable
 
@@ -679,7 +663,7 @@ Instead of using the query library’s cache and invalidation model, the team bu
 
 Instead of accepting a callable, the project introduces an interface, implementation, factory, registration mechanism, and test double.
 
-Instead of using a closed enum, the project creates a trait hierarchy with dynamic dispatch because “we may add more implementations later.”
+Instead of using a closed enum, the project creates a trait hierarchy with dynamic dispatch because "we may add more implementations later."
 
 This private dialect can still be internally consistent.
 
@@ -687,9 +671,7 @@ But every reader must learn it.
 
 The code becomes longer culturally, even when the line count looks disciplined.
 
-Good idiomatic code benefits from thousands of developers having already agreed on what common shapes mean.
-
-Custom architecture spends that cultural capital and replaces it with onboarding documentation.
+> Good idiomatic code benefits from thousands of developers having already agreed on what common shapes mean. Custom architecture spends that cultural capital and replaces it with onboarding documentation.
 
 Sometimes the trade is worth it.
 
@@ -718,7 +700,7 @@ A book may recommend separating business logic from presentation.
 
 Reasonable.
 
-But a React component often naturally combines markup, interaction behavior, accessibility, and state ownership. Extracting all “logic” into controller-like hooks can leave the component tree as an anaemic projection of an architecture designed somewhere else.
+But a React component often naturally combines markup, interaction behavior, accessibility, and state ownership. Extracting all "logic" into controller-like hooks can leave the component tree as an anaemic projection of an architecture designed somewhere else.
 
 A book may recommend depending on abstractions rather than implementations.
 
@@ -738,11 +720,11 @@ Its translation can be.
 
 Architecture books often describe forces accurately, then accidentally make their preferred response look like physics.
 
-The map may be useful. It was still drawn in someone else’s country.
+> The map may be useful. It was still drawn in someone else’s country.
 
 ## Architecture is not above implementation
 
-A common architectural story places “high-level design” above languages and frameworks.
+A common architectural story places "high-level design" above languages and frameworks.
 
 The architecture contains the important decisions. Programming languages, libraries, databases, transports, and UI frameworks are implementation details underneath it.
 
@@ -772,7 +754,7 @@ TypeScript’s structural types can move interface ownership from implementation
 
 Implementation technologies are not passive containers.
 
-The architecture may think it owns the language, but the language has been quietly rearranging the furniture.
+> The architecture may think it owns the language, but the language has been quietly rearranging the furniture.
 
 ## SonarQube cannot save you
 
@@ -826,9 +808,7 @@ The dependency array can be flawless while the state model is wrong.
 
 Static analysis usually evaluates the structure we supplied. It is less capable of challenging why that structure exists in the first place.
 
-SonarQube can count the branches.
-
-It cannot reliably tell us that the tree should have been a route.
+> SonarQube can count the branches. It cannot reliably tell us that the tree should have been a route.
 
 This is not a criticism of SonarQube failing to be an omniscient architect. No useful tool should be dismissed because it does not solve every category of software design.
 
@@ -866,12 +846,11 @@ The useful division of responsibility seems obvious.
 We should teach the model what it cannot know:
 
 ```md
-- The frontend is embedded inside Business Central.
+- The frontend is embedded inside a broader business application.
 - The build must emit an IIFE bundle.
 - Use the existing TanStack Query client.
-- Authentication is supplied by the host.
 - Python 3.13 is the production runtime.
-- Run the integration tests before changing the API contract.
+- Run the integration tests after changing the API contract.
 ```
 
 These are project facts and hard constraints.
@@ -924,9 +903,9 @@ The old bias has acquired a robot arm.
 
 There is an obvious trap on the other side of this argument.
 
-“Write idiomatic code” can become another universal commandment.
+"Write idiomatic code" can become another universal commandment.
 
-Idioms can turn into fashion, tribal signalling, or cargo cult just as easily as design patterns.
+> Idioms can turn into fashion, tribal signalling, or cargo cult just as easily as design patterns.
 
 A React component can genuinely need memoization.
 
@@ -1005,7 +984,7 @@ Python often values readable orchestration, modules, protocols, and direct execu
 
 Rust moves ownership, failure, and possible states into the type system, asking the compiler to participate in the design.
 
-Later, we will return to the foreign-accent problem directly, examine why quality tools cannot measure everything we mean by “good code,” and ask whether our increasingly elaborate coding-agent instructions are preserving valuable project knowledge or mass-producing architectural baggage.
+Later, we will return to the foreign-accent problem directly, examine why quality tools cannot measure everything we mean by "good code" and ask whether our increasingly elaborate coding-agent instructions are preserving valuable project knowledge or mass-producing architectural baggage.
 
 The central claim is simple:
 
@@ -1018,7 +997,7 @@ Their implementations do not.
 ### Sources and further reading
 
 - React: [Thinking in React](https://react.dev/learn/thinking-in-react) and [Lifecycle of Reactive Effects](https://react.dev/learn/lifecycle-of-reactive-effects).
-- TypeScript: [TypeScript for Java/C# Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html).
+- TypeScript: [TypeScript for Java/C# Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html#co-learning-javascript).
 - Python: [PEP 8: Style Guide for Python Code](https://peps.python.org/pep-0008/).
 - Rust: [ownership](https://doc.rust-lang.org/book/?search=ownership), [Enums and Pattern Matching](https://doc.rust-lang.org/book/ch06-00-enums.html), and the [`Result` enum](https://doc.rust-lang.org/stable/core/result/enum.Result.html).
 - SonarQube: [rules documentation](https://docs.sonarsource.com/sonarqube/latest/user-guide/rules).
