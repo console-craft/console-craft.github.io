@@ -3,6 +3,18 @@ import Layout from '../layouts/Layout.astro';
 
 const talks = [
 	{
+		title: "If you're still reading the code, you have Skill Issues",
+		url: 'https://skill-issues.console-craft.com/',
+		image: '/images/talks/skill-issues.webp',
+		description: 'A highly interactive talk on AI-assisted development: choosing tools, shaping workflows, and building understanding—not just more code. Explore HyperFrames-based slides with AI narration by ElevenLabs and background music generated with Suno.',
+		date: '19.11.2026',
+		dateTime: '2026-11-19',
+		language: 'English',
+		topics: [
+			'AI-assisted development', 'agent skills', 'dev workflows', 'interactive presentation',
+		],
+	},
+	{
 		videoId: 'FlIce1A2y7w',
 		title: 'Escape the permanent-underclass by improving your AI workflow',
 		date: '22.07.2026',
@@ -63,7 +75,7 @@ const talks = [
 		<div class="talk-list">
 			{talks.map((talk) => (
 				<article class="talk-card">
-					<div class="talk-video">
+					{talk.videoId ? <div class="talk-media">
 						<iframe
 							src={`https://www.youtube-nocookie.com/embed/${talk.videoId}`}
 							title={talk.title}
@@ -71,10 +83,19 @@ const talks = [
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 							allowfullscreen
 						></iframe>
-					</div>
+					</div> : <a
+						class="talk-media talk-presentation"
+						href={talk.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label={`Open interactive presentation: ${talk.title}`}
+					>
+						<img src={talk.image} alt="Skill Issues title slide with neon yellow lettering over cyan and magenta waves." width="1920" height="1080" loading="lazy" />
+					</a>}
 					<div class="talk-details">
 						<time datetime={talk.dateTime}>{talk.date}</time>
 						<h3>{talk.title}</h3>
+						{talk.description && <p>{talk.description}</p>}
 						<div class="talk-pills" aria-label={`Language and topics for ${talk.title}`}>
 							<span class="pill language">{talk.language}</span>
 							{talk.topics.map((topic) => <span class="pill">{topic}</span>)}
@@ -186,7 +207,7 @@ const talks = [
 		transition: scale 220ms ease, translate 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
 	}
 
-	.talk-card:nth-child(even) .talk-video {
+	.talk-card:nth-child(even) .talk-media {
 		order: 2;
 	}
 
@@ -203,7 +224,7 @@ const talks = [
 		}
 	}
 
-	.talk-video {
+	.talk-media {
 		align-self: start;
 		overflow: hidden;
 		aspect-ratio: 16 / 9;
@@ -213,11 +234,17 @@ const talks = [
 		box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 	}
 
-	.talk-video iframe {
+	.talk-media iframe,
+	.talk-media img {
 		display: block;
 		width: 100%;
 		height: 100%;
 		border: 0;
+	}
+
+	.talk-presentation:focus-visible {
+		outline: 2px solid var(--yellow);
+		outline-offset: 4px;
 	}
 
 	.talk-details {
@@ -294,7 +321,7 @@ const talks = [
 			grid-template-columns: 1fr;
 		}
 
-		.talk-card:nth-child(even) .talk-video {
+		.talk-card:nth-child(even) .talk-media {
 			order: initial;
 		}
 	}
